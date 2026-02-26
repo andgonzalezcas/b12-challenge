@@ -1,0 +1,27 @@
+name: Enviar Postulacion B12
+
+on: [push]
+
+jobs:
+  submit-challenge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Traer el código del repositorio
+        uses: actions/checkout@v4
+      
+      - name: Configurar entorno Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          
+      - name: Instalar dependencias
+        run: pip install requests
+        
+      - name: Ejecutar script de postulación
+        env:
+          B12_API_URL: ${{ vars.B12_API_URL }}
+          B12_SECRET: ${{ secrets.B12_SECRET }}
+          MY_EMAIL: ${{ vars.MY_EMAIL }}
+          MY_NAME: ${{ vars.MY_NAME }}
+          MY_RESUME_LINK: ${{ vars.MY_RESUME_LINK }}
+        run: python submit.py
